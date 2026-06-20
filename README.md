@@ -1,4 +1,4 @@
-# Análisis sobre los basurales a cielo abierto y su incidencia en los casos de dengue de la provincia de Buenos Aires  
+# Análisis sobre la incidencia en los casos de dengue y la densidad poblacional en la región del Área Metropolitana de Buenos Aires (AMBA)
 
 Lucas Caballero 
 
