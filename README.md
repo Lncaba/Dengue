@@ -1,4 +1,4 @@
-# Análisis sobre la incidencia en los casos de dengue y la densidad poblacional en la región del Gran Buenos Aires (GBA)
+# Análisis sobre la incidencia en los casos de dengue y la densidad poblacional del área denominada como el "Conurbano bonaerense" 
 
 Lucas Caballero 
 
