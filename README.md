@@ -1,4 +1,4 @@
-# Análisis sobre la incidencia en los casos de dengue y la densidad poblacional en la región del Área Metropolitana de Buenos Aires (AMBA)
+# Análisis sobre la incidencia en los casos de dengue y la densidad poblacional en la región del Gran Buenos Aires (GBA)
 
 Lucas Caballero 
 
