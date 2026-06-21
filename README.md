@@ -10,7 +10,7 @@ Se propone como objetivo analizar como se desarrolla la incidencia de casos de d
 
 [data](./data):
 
-info_publica_dengue-1-2025-a-2026-06-15.csv
+`info_publica_dengue-1-2025-a-2026-06-15.csv`: corresponde a la Vigilancia de Dengue y Zika (Se 1 2025 - Se 22 2026), datos que son correspondientes al Registro del Sistema Nacional de Vigilancia de la Salud 2.0, por parte del Ministerio de Salud de la Nación Argentina. 
 
 
-Poblacion_2022_amba_departamentos.csv
+`Poblacion_2022_amba_departamentos.csv`: Indicadores de personas. Departamentos, 2022. Corresponde a Indicadores del Censo Nacional de Población, Hogares y Viviendas, 2022. Se seleccionó el Área Metropolitana de Buenos Aires (AMBA) para luego ir modificando el dataset a la necesidad pretendida.
