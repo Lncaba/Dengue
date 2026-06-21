@@ -1,0 +1,90 @@
+---
+title: "Dengue"
+author: "Lucas Caballero"
+date: "2026-06-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+
+```{r}
+# cargamos librerias
+library(fs)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(ggspatial)
+library(osmdata)
+library(leaflet)
+library(geoAr)
+```
+
+
+```{r}
+df_poblacion_amba <- read_csv("Poblacion_2022_amba_departamentos.csv", locale = locale(encoding = "UTF-8"))
+
+df_dengue <- read_delim("info_publica_dengue-1-2025-a-2026-06-15.csv", delim = ";", locale = locale(encoding = "latin1"))
+```
+
+
+```{r}
+# tema dengue
+df_dengue_bsas <- df_dengue %>%
+  filter(evento == "Dengue", provincia_residencia %in% c("Buenos Aires")) %>%
+  mutate(
+    id_depto_indec_residencia = str_pad(id_depto_indec_residencia, width = 3, pad = "0")) %>%
+  group_by(id_prov_indec_residencia, provincia_residencia, id_depto_indec_residencia, departamento_residencia) %>%
+  summarise(total_casos_dengue = sum(cantidad, na.rm = TRUE), .groups = "drop")
+
+```
+
+
+```{r}
+# tema poblacion
+df_pob_bsas <- df_poblacion_amba %>%
+  rename(
+    cod_prov_pob = `Código de provincia`,
+    nombre_prov_pob = `Nombre de provincia`,
+    cod_depto_pob = `Código de departamento`,
+    nombre_depto_pob = `Nombre de departamento`,
+    pob_total = `Población total`,
+    superficie_km2 = `Superficie en km2`
+  ) %>%
+  select(
+    cod_prov_pob,
+    nombre_prov_pob,
+    cod_depto_pob,
+    nombre_depto_pob,
+    pob_total,
+    superficie_km2,
+    `Latitud del centroide`,
+    `Longitud del centroide`
+  ) %>% 
+mutate(
+  cod_prov_pob = as.numeric(cod_prov_pob),
+  id_depto_corto = str_sub(cod_depto_pob, -3)
+)
+```
+
+
+```{r}
+df_resultado <- df_dengue_bsas %>%
+  mutate(id_prov_indec_residencia = as.numeric(id_prov_indec_residencia)) %>%
+  inner_join(
+    df_pob_bsas,
+    by = c("id_prov_indec_residencia" = "cod_prov_pob", "id_depto_indec_residencia" = "id_depto_corto")
+  )
+```
+
+
+```{r}
+df_resultado_dos <-df_resultado %>%
+  mutate(
+    densidad_pob = pob_total / superficie_km2,
+    tasa_incidencia = (total_casos_dengue / pob_total) * 100000
+  )
+```
+
