@@ -12,4 +12,5 @@ Se propone como objetivo analizar como se desarrolla la incidencia de casos de d
 
 info_publica_dengue-1-2025-a-2026-06-15.csv
 
+
 Poblacion_2022_amba_departamentos.csv
