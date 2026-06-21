@@ -1,4 +1,4 @@
-# Análisis sobre los casos de dengue y la densidad poblacional del área denominada como el "Conurbano bonaerense" en el período 2025 y junio del 2026. 
+# Análisis sobre los casos de dengue y la densidad poblacional del "Conurbano bonaerense" en el período 2025 y junio del 2026. 
 
 Lucas Caballero 
 
