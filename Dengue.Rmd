@@ -7,12 +7,12 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+set.seed(123)
 ```
-
 
 ```{r}
 # cargamos librerias
-library(fs)
+library(sf)
 library(dplyr)
 library(tidyverse)
 library(ggplot2)
@@ -22,29 +22,25 @@ library(leaflet)
 library(geoAr)
 ```
 
-
 ```{r}
 df_poblacion_amba <- read_csv("Poblacion_2022_amba_departamentos.csv", locale = locale(encoding = "UTF-8"))
 
 df_dengue <- read_delim("info_publica_dengue-1-2025-a-2026-06-15.csv", delim = ";", locale = locale(encoding = "latin1"))
 ```
 
-
 ```{r}
 # tema dengue
-df_dengue_bsas <- df_dengue %>%
-  filter(evento == "Dengue", provincia_residencia %in% c("Buenos Aires")) %>%
+df_dengue_bsas <- df_dengue |>
+  filter(evento == "Dengue", provincia_residencia %in% c("Buenos Aires")) |>
   mutate(
-    id_depto_indec_residencia = str_pad(id_depto_indec_residencia, width = 3, pad = "0")) %>%
-  group_by(id_prov_indec_residencia, provincia_residencia, id_depto_indec_residencia, departamento_residencia) %>%
+    id_depto_indec_residencia = str_pad(id_depto_indec_residencia, width = 3, pad = "0")) |>
+  group_by(id_prov_indec_residencia, provincia_residencia, id_depto_indec_residencia, departamento_residencia) |>
   summarise(total_casos_dengue = sum(cantidad, na.rm = TRUE), .groups = "drop")
-
 ```
-
 
 ```{r}
 # tema poblacion
-df_pob_bsas <- df_poblacion_amba %>%
+df_pob_bsas <- df_poblacion_amba |>
   rename(
     cod_prov_pob = `Código de provincia`,
     nombre_prov_pob = `Nombre de provincia`,
@@ -52,7 +48,7 @@ df_pob_bsas <- df_poblacion_amba %>%
     nombre_depto_pob = `Nombre de departamento`,
     pob_total = `Población total`,
     superficie_km2 = `Superficie en km2`
-  ) %>%
+  ) |>
   select(
     cod_prov_pob,
     nombre_prov_pob,
@@ -62,16 +58,15 @@ df_pob_bsas <- df_poblacion_amba %>%
     superficie_km2,
     `Latitud del centroide`,
     `Longitud del centroide`
-  ) %>% 
+  ) |> 
 mutate(
   cod_prov_pob = as.numeric(cod_prov_pob),
   id_depto_corto = str_sub(cod_depto_pob, -3)
-)
+) 
 ```
 
-
 ```{r}
-df_resultado <- df_dengue_bsas %>%
+df_resultado <- df_dengue_bsas |>
   mutate(id_prov_indec_residencia = as.numeric(id_prov_indec_residencia)) %>%
   inner_join(
     df_pob_bsas,
@@ -79,12 +74,96 @@ df_resultado <- df_dengue_bsas %>%
   )
 ```
 
-
 ```{r}
-df_resultado_dos <-df_resultado %>%
+df_resultado <-df_resultado |>
   mutate(
     densidad_pob = pob_total / superficie_km2,
     tasa_incidencia = (total_casos_dengue / pob_total) * 100000
+  ) |>
+  select(
+    id_prov_indec_residencia = id_prov_indec_residencia,
+    id_depto_indec_residencia = id_depto_indec_residencia,
+    Provincia = provincia_residencia,
+    Municipio = nombre_depto_pob,
+    Casos_dengue = total_casos_dengue,
+    Superficie_Km2 = superficie_km2,
+    Densidad_Hab_Km2 = densidad_pob,
+    Tasa_Incidencia_100000 =tasa_incidencia
+  ) |>
+  arrange(desc(Tasa_Incidencia_100000))
+```
+
+
+```{r}
+#vemos como esta compuesto con los cod desde geoAr
+mapa_bsas <- get_geo("BUENOS AIRES", level = "departamento")
+```
+
+
+```{r}
+mapa_dengue <- mapa_bsas |>
+  st_make_valid() |>
+  inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
+```
+
+
+```{r}
+mapa_dengue <- mapa_bsas |>
+  st_buffer(dist = 0) |>
+  inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
+```
+
+
+# FIGURA 1:
+
+
+```{r}
+#casos absolutos del dengue
+mapa_centroides <- mapa_dengue |>
+  st_make_valid() |>
+  st_centroid()
+
+mapa_casos <- ggplot() +
+  geom_sf(data = mapa_dengue, fill = "blue", color = "darkgray", size = 0.2) +
+  geom_sf(data = mapa_centroides, aes(size = Casos_dengue), color = "orange", alpha = 0.8) +
+  scale_size_continuous(name = "Cantidad bruta de casos", range = c(3, 12)) +
+  labs(
+    title = "Cantidad de casos de dengue en el Conurbano Bonaerense",
+    caption = "Relevamiento de casos de dengue y los datos del censo 2022"
+  ) +
+  theme_minimal()
+
+print(mapa_casos)
+```
+
+# FIGURA 2:
+
+```{r}
+#coropleta
+mapa_coropleta <- ggplot(data = mapa_dengue) +
+  geom_sf(aes(fill = Tasa_Incidencia_100000), color = "black", size = 0.2) +
+  scale_fill_viridis_c(option = "plasma", name = "Tasa de Incidencia (por cada 100.000 habitantes)") +
+    labs(
+    title = "Tasa de Incidencia en casos de dengue en el Conurbano Bonaerense",
+    caption = "Basado sobre casos de dengue con datos del censo 2022"
+  ) +
+  theme_minimal()
+
+print(mapa_coropleta)
+```
+
+# FIGURA 3:
+
+```{r}
+pal <- colorNumeric(palette = c("seagreen4","deeppink4"), domain = mapa_dengue$Tasa_Incidencia_100000)
+
+mapa_dengue |>
+  leaflet() |>
+  addTiles() |>
+  addPolygons(
+    color = ~pal(Tasa_Incidencia_100000),
+    popup = ~paste0("<b>Municipio:</b> ", Municipio, "<br>", "<b>Tasa:</b> ", round(Tasa_Incidencia_100000, 1), "<br>", "<b>Casos brutos:</b> ", Casos_dengue),
+    label = ~Municipio
   )
 ```
 
