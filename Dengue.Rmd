@@ -36,7 +36,11 @@ Analizar la densidad poblacional de los municipios (o departamentos) que conform
 Este análisis se compone originalmente de dos datasets no espaciales: el correspondiente a los casos del dengue, que dedica su información a una representación de tabla epidemiológica entre los años 2025 y 2026; el otro dataset responde a un reporte de datos demográficos que derivan del Censo 2022, que describen datos estadísticos (es interesante que contiene datos georreferenciales, pero no por ello son estrictamente un dataset espacial). 
 Sin embargo, más adelante prosiguiendo con la investigación, se recurrió a la utilización de la librería "geoAr" que permite proporcionar distintas geometrías, entre las que necesitamos sobre los 24 municipios del Conurbano Bonaerense. 
 
-Por ello, en esta otra parte del trabajo, posterior a la unión de los dos datasets no espaciales para el cálculo de la tasa de incidencia de casos del dengue, se sumó la unión de este nuevo dataset con el mapa que brinda esta librería, siendo así de carácter espacial.
+En esta parte del trabajo se utilizaron distintas librerías como tidyverse y dplyr que nos permite las modificaciones pertinentes a los datasets cargados. Con ello logramos conseguir la unión de los datasets según variables comunes como el caso de los códigos de provincia y de departamento, que son estrictamente necesarios para unir especificaciones poblacionales, como conseguir la densidad poblacional o la tasa de incidencia de casos de dengue.
+
+Por ello, en esta otra parte del trabajo, posterior a la unión de los dos datasets no espaciales, se sumó la unión de este nuevo dataset con el mapa que brinda esta librería, siendo así de carácter espacial. Aquí es necesario utilizar la librería geoAr que nos brinda el mapa de la provincia de Buenos Aires, dividido de departamentos; mediante el uso de la librería sf algunas funciones para evitar geometrías inválidas o rotas y, posteriormente, la generación de diferentes mapas (utilzando esta librería, como así también mediante ggplot2 o leaflet -que nos proporciona un mapa interactivo)
+
+Por supuesto a lo ultimo del trabajo, encontramos las conclusiones que nos permitió sintetizar los distintos resultados que arrojaron los cálculos previamente obtenidos; corroborar la hipótesis planteada y finaliza con las referencias utilizadas para la investigación.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
@@ -276,4 +280,15 @@ Volviendo a la hipótesis: "Los 5 municipios más densamente poblados del Conurb
 
 Si bien los municipios de Vicente López, Gral. San Martín son aquellos que no solo contienen cantidades importantes de casos sobre dengue, son los que conforman el grupo de los más densamente poblados y los que tienen mayores tasas de Incidencia, no sucede de la misma forma para los partidos de Lanús y Tres de Febrero (que tienen menores tasas de Incidencia); sumado al caso de Lomas de Zamora donde no refleja esta situación (muy baja tasa de Incidencia y de casos confirmados de dengue).
 
+# Referencias:
+
+Ministerio de Salud de la Nación. (2024). Resumen ejecutivo: Plan de preparación y respuesta integral a epidemias de dengue y otras enfermedades arbovirales. Argentina.gob.ar. https://www.argentina.gob.ar/sites/default/files/2024/08/2025-10-resumen-ejecutivo-plan-preparacion-arbovirus-1310.pdf
+
+Ministerio de Salud de la Nación. (2026). Vigilancia de Dengue y Zika (Se 1 2025 - Se 20 2026) [Conjunto de datos]. Portal de Datos Abiertos Salud. https://datos.salud.gob.ar/dataset/vigilancia-de-dengue-y-zika/archivo/33e12e9f-1d14-4bc7-b34c-a1f88ab7b990
+
+Pablo De Grande y Agustín Salvia (2024). Indicadores del Censo Nacional de Población, Hogares y Viviendas, 2022. Recuperado el 22 de junio, 2026, de https://poblaciones.org/@257701 
+
+Programa de Estudios del Conurbano. (2016). Conurbano. Atlas del Conurbano Bonaerense; Universidad Nacional de Avellaneda. https://www.atlasconurbano.info/pagina.php?id=169
+
+Ruiz Nicolini J, Del Boca P, Juara J (2024). geoAr: Argentina’s Spatial Data Toolbox. R package version 1.0.0, https://github.com/PoliticaArgentina/geoAr.
 

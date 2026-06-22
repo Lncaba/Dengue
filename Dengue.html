@@ -4497,10 +4497,26 @@ dataset espacial). Sin embargo, más adelante prosiguiendo con la
 investigación, se recurrió a la utilización de la librería “geoAr” que
 permite proporcionar distintas geometrías, entre las que necesitamos
 sobre los 24 municipios del Conurbano Bonaerense.</p>
+<p>En esta parte del trabajo se utilizaron distintas librerías como
+tidyverse y dplyr que nos permite las modificaciones pertinentes a los
+datasets cargados. Con ello logramos conseguir la unión de los datasets
+según variables comunes como el caso de los códigos de provincia y de
+departamento, que son estrictamente necesarios para unir
+especificaciones poblacionales, como conseguir la densidad poblacional o
+la tasa de incidencia de casos de dengue.</p>
 <p>Por ello, en esta otra parte del trabajo, posterior a la unión de los
-dos datasets no espaciales para el cálculo de la tasa de incidencia de
-casos del dengue, se sumó la unión de este nuevo dataset con el mapa que
-brinda esta librería, siendo así de carácter espacial.</p>
+dos datasets no espaciales, se sumó la unión de este nuevo dataset con
+el mapa que brinda esta librería, siendo así de carácter espacial. Aquí
+es necesario utilizar la librería geoAr que nos brinda el mapa de la
+provincia de Buenos Aires, dividido de departamentos; mediante el uso de
+la librería sf algunas funciones para evitar geometrías inválidas o
+rotas y, posteriormente, la generación de diferentes mapas (utilzando
+esta librería, como así también mediante ggplot2 o leaflet -que nos
+proporciona un mapa interactivo)</p>
+<p>Por supuesto a lo ultimo del trabajo, encontramos las conclusiones
+que nos permitió sintetizar los distintos resultados que arrojaron los
+cálculos previamente obtenidos; corroborar la hipótesis planteada y
+finaliza con las referencias utilizadas para la investigación.</p>
 </div>
 <div id="análisis" class="section level1">
 <h1>Análisis:</h1>
@@ -4623,6 +4639,22 @@ para los partidos de Lanús y Tres de Febrero (que tienen menores tasas
 de Incidencia); sumado al caso de Lomas de Zamora donde no refleja esta
 situación (muy baja tasa de Incidencia y de casos confirmados de
 dengue).</p>
+</div>
+<div id="referencias" class="section level1">
+<h1>Referencias:</h1>
+<p>Ministerio de Salud de la Nación. (2024). Resumen ejecutivo: Plan de
+preparación y respuesta integral a epidemias de dengue y otras
+enfermedades arbovirales. Argentina.gob.ar. <a href="https://www.argentina.gob.ar/sites/default/files/2024/08/2025-10-resumen-ejecutivo-plan-preparacion-arbovirus-1310.pdf" class="uri">https://www.argentina.gob.ar/sites/default/files/2024/08/2025-10-resumen-ejecutivo-plan-preparacion-arbovirus-1310.pdf</a></p>
+<p>Ministerio de Salud de la Nación. (2026). Vigilancia de Dengue y Zika
+(Se 1 2025 - Se 20 2026) [Conjunto de datos]. Portal de Datos Abiertos
+Salud. <a href="https://datos.salud.gob.ar/dataset/vigilancia-de-dengue-y-zika/archivo/33e12e9f-1d14-4bc7-b34c-a1f88ab7b990" class="uri">https://datos.salud.gob.ar/dataset/vigilancia-de-dengue-y-zika/archivo/33e12e9f-1d14-4bc7-b34c-a1f88ab7b990</a></p>
+<p>Pablo De Grande y Agustín Salvia (2024). Indicadores del Censo
+Nacional de Población, Hogares y Viviendas, 2022. Recuperado el 22 de
+junio, 2026, de <a href="https://poblaciones.org/@257701" class="uri">https://poblaciones.org/@257701</a></p>
+<p>Programa de Estudios del Conurbano. (2016). Conurbano. Atlas del
+Conurbano Bonaerense; Universidad Nacional de Avellaneda. <a href="https://www.atlasconurbano.info/pagina.php?id=169" class="uri">https://www.atlasconurbano.info/pagina.php?id=169</a></p>
+<p>Ruiz Nicolini J, Del Boca P, Juara J (2024). geoAr: Argentina’s
+Spatial Data Toolbox. R package version 1.0.0, <a href="https://github.com/PoliticaArgentina/geoAr" class="uri">https://github.com/PoliticaArgentina/geoAr</a>.</p>
 </div>
 
 
