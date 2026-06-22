@@ -5,6 +5,36 @@ date: "2026-06-21"
 output: html_document
 ---
 
+## CASO DE ESTUDIO: DENGUE EN EL CONURBANO BONAERENSE
+
+# Introducción: 
+
+El dengue configura un problema de salud pública considerable; es una enfermedad viral que se trasmite a traves de los mosquitos del género Aedes Aegypti. Según la Organización Panamericana de la Salud (OPS), el año 2024 fue donde se registraron la mayor cantidad de casos en la Región de las Américas con 13 millones de casos, notificados en 50 países con una tasa de letalidad de 0,063% (8186 casos fatales) con co-circulación de los cuatro serotipos de dengue (DENV-1 a DENV-4)1 (Plan de Preparación y Respuesta Integral a Epidemias de Dengue y otras Enfermedades Arbovirales,Ministerio de Salud República Argentina , 2025-2026).
+
+En el caso de la Argentina, tuvieron las epidemias más importantes durante los años 2023 y 2024; donde se registraron la mayor cantidad de casos confirmados y fallecidos por esta problemática. Sumado a que durante el año 2023 la transmisión del virus sucedió durante todo el año en el territorio nacional; además de cuestiones adyacentes como la circulación simultáneas de otros serotipos del virus, que complejizan el cuadro de resolución (Plan de Preparación y Respuesta Integral a Epidemias de Dengue y otras Enfermedades Arbovirales, Ministerio de Salud República Argentina, 2025-2026).
+
+Ahora bien, cuando se cubre un análisis sobre el Conurbano Bonaerense, es entrar en una compleja categoría y remite a la convergencia de narrativas y prácticas (administrativas, técnicas, políticas, sociales y económicas) que contribuyeron a su construcción como una unidad específica y en oposición a la Ciudad de Buenos Aires, incorporando a la vida cotidiana, conceptos propios del urbanismo, para expresar mayormente con evocaciones negativas una realidad urbana social, compleja y dinámica (Atlas Conurbano, 2016). 
+
+Su extensión territorial  se operacionaliza siguiendo la categoría “24 partidos del GBA” (INDEC) que refiere al área que rodea a la Ciudad de Buenos Aires y que forma parte del aglomerado “Gran Buenos Aires”, que incluye, conjuntamente, a la Ciudad Autónoma de Buenos Aires y los mismos 24 partidos (Atlas Conurbano, 2016).
+
+Por ello, es necesario interiorizarse en la problemática de casos de dengue, en gran parte del aglomerado que conforma el "Conurbano". Se enmarcará una investigación sobre cuánto incide la densidad poblacional de cada municipio de esta área geográfica sobre los casos confirmados de Dengue existente, durante el período de 2025 a junio de 2026.
+
+# Problema: 
+
+¿La tasa de incidencia sobre casos del dengue aumenta en los municipios más densamente poblados del Conurbano Bonaerense según los datos del Registro del Sistema Nacional de Vigilancia de la Salud 2.0 (2025-2026)?
+
+# Hipótesis:
+
+Los 5 municipios más densamente poblados del Conurbano Bonaerense (Lanús, Vicente López, Tres de Febrero, General San Martín, Lomas de Zamora) revisten las más altas tasas de incidencia de casos de dengue durante el período 2025-2026.
+
+# Objetivo:
+
+Analizar la densidad poblacional de los municipios (o departamentos) que conforman el Conurbano Bonaerense y, si con ello refleja, una mayor tasa de incidencia en casos confirmados de dengue.
+
+# Metodología:
+
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 set.seed(123)
@@ -116,7 +146,6 @@ mapa_dengue <- mapa_bsas |>
 
 # FIGURA 1:
 
-
 ```{r}
 #casos absolutos del dengue
 mapa_centroides <- mapa_dengue |>
@@ -162,7 +191,7 @@ mapa_dengue |>
   addTiles() |>
   addPolygons(
     color = ~pal(Tasa_Incidencia_100000),
-    popup = ~paste0("<b>Municipio:</b> ", Municipio, "<br>", "<b>Tasa:</b> ", round(Tasa_Incidencia_100000, 1), "<br>", "<b>Casos brutos:</b> ", Casos_dengue),
+    popup = ~paste0("<b>Municipio:</b> ", Municipio, "<br>", "<b>Tasa:</b> ", round(Tasa_Incidencia_100000, 1), "<br>", "<b>Casos confirmados:</b> ", Casos_dengue),
     label = ~Municipio
   )
 ```
