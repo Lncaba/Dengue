@@ -212,7 +212,7 @@ A la hora de visualizar el mapa/Figura 2 notamos ciertos comportamientos distint
 
 - El caso de Ituzaingó lidera la mayor tasa de Incidencia sobre casos de dengue (26,9%).
 
-- El caso de Lomas de Zamora no conforma un área preocupante sobre la tasa de Incidencia de casos de dengue(0,72%).
+- El caso de Lomas de Zamora no conforma un área preocupante sobre la tasa de Incidencia de casos de dengue (0,72%).
 
 Veamos ahora que propone el mapa interactivo, que permite unificar toda la información importante referente a los casos de dengue. En este caso interactúan datos como el nombre del municipio, la tasa de Incidencia de casos y la cantidad bruta de los casos.
 
