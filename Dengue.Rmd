@@ -108,6 +108,15 @@ mutate(
 ```
 
 ```{r}
+# con st_as_sf logramos que df_pob_bsas se vuelva un punto geométrico; crs = 4326 para indicar WGS84 para lon y lat del centroide 
+# aca realizamos la transformación a POSGAR 2007/Faja 4
+df_resultado <- df_pob_bsas |>
+st_as_sf(coords = c("Longitud del centroide", "Latitud del centroide"), crs = 4326) |> 
+  st_transform(22184)
+```
+
+
+```{r}
 # id_prov_indec_residencia sea de un tipo de dato numérico
 # inner_join para cruzar con las columnas que compartan df_dengue_bsas con df_pob_bsas
 df_resultado <- df_dengue_bsas |>
@@ -165,16 +174,20 @@ mapa_bsas <- get_geo("BUENOS AIRES", level = "departamento")
 ```{r}
 # sf (st_make_valid) para corregir geometrías inválidas
 # inner_join para unir el dataset de geoAr con los de df_resultado con énfasis en coddepto_censo e id_depto_indec_residencia 
+# incluimos la transformación a POSGAR 2007/Faja 4
 mapa_dengue <- mapa_bsas |>
   st_make_valid() |>
+  st_transform(22184) |>
   inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
 ```
 
 
 ```{r}
 # st_buffer para evitar polígonos invalidos o rotos 
+# misma transformación (POSGAR 2007/Faja 4)
 mapa_dengue <- mapa_bsas |>
   st_buffer(dist = 0) |>
+  st_transform(22184) |>
   inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
 ```
 
@@ -256,9 +269,11 @@ Veamos ahora que propone el mapa interactivo, que permite unificar toda la infor
 
 ```{r}
 # mapa leaflet interactivo
+# si o si st_transform sino el mapa leaflet aparece en cualquier lado
 pal <- colorNumeric(palette = c("seagreen4","deeppink4"), domain = mapa_dengue$Tasa_Incidencia_100000)
 
 mapa_dengue |>
+  st_transform(4326) |>
   leaflet() |>
   addTiles() |>
   addPolygons(
