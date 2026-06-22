@@ -126,6 +126,8 @@ df_resultado <-df_resultado |>
   arrange(desc(Tasa_Incidencia_100000))
 ```
 
+# Análisis:
+
 Revisando estos datos encontramos los 5 municipios más densamente poblados: 
 
 - El municipio más densamente poblado corresponde a Lanús con alrededor de 9156 personas por km2; 
@@ -253,7 +255,7 @@ Finalizando este trabajo de investigación pudimos revisar los datos correspondi
 
 - Refiriéndose a los partidos de General San Martín y Vicente López, son los que cumplen con cierto enunciado al comenzar el trabajo: el Municipio de Gral. San Martín posee una tasa de Incidencia del 23,2% y con 103 casos de dengue, lo que lo lleva a ser el primer partido con más casos del Conurbano; el caso de Vicente López posee una tasa de Incidencia del 23,2% con 65 casos.
 
-Volviendo a la hipótesis: "Los 5 municipios más densamente poblados del Conurbano Bonaerense (Lanús, Vicente López, Tres de Febrero, General San Martín, Lomas de Zamora) revisten las más altas tasas de incidencia de casos de dengue durante el período 2025-2026", podemos aducir que no es correcta este enunciado. 
+Volviendo a la hipótesis: "Los 5 municipios más densamente poblados del Conurbano Bonaerense (Lanús, Vicente López, Tres de Febrero, General San Martín, Lomas de Zamora) revisten las más altas tasas de Incidencia de casos de dengue durante el período 2025-2026", podemos aducir que no es correcta este enunciado. 
 
 Si bien los municipios de Vicente López, Gral. San Martín son aquellos que no solo contienen cantidades importantes de casos sobre dengue, son los que conforman el grupo de los más densamente poblados y los que tienen mayores tasas de Incidencia, no sucede de la misma forma para los partidos de Lanús y Tres de Febrero (que tienen menores tasas de Incidencia); sumado al caso de Lomas de Zamora donde no refleja esta situación (muy baja tasa de Incidencia y de casos confirmados de dengue).
 
