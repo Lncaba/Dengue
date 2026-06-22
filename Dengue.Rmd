@@ -276,7 +276,7 @@ Finalizando este trabajo de investigación pudimos revisar los datos correspondi
 
 - Un dato curioso es el caso de Ezeiza. En un principio al poder visualizar los mapas comprendí que uno de los 24 municipios del Conurbano no estaba contabilizado; se veía los casos de 23 partidos. Al revisar el dataset original de dengue comprendí que el Municipio de Ezeiza no contabilizó casos confirmados. Por ello en los 3 mapas este municipio no forma parte.
 
-Volviendo a la hipótesis: "Los 5 municipios más densamente poblados del Conurbano Bonaerense (Lanús, Vicente López, Tres de Febrero, General San Martín, Lomas de Zamora) revisten las más altas tasas de Incidencia de casos de dengue durante el período 2025-2026", podemos aducir que no es correcta este enunciado. 
+Volviendo a la hipótesis: "Los 5 municipios más densamente poblados del Conurbano Bonaerense (Lanús, Vicente López, Tres de Febrero, General San Martín, Lomas de Zamora) revisten las más altas tasas de Incidencia de casos de dengue durante el período 2025-2026", podemos aducir que no es correcto este enunciado. 
 
 Si bien los municipios de Vicente López, Gral. San Martín son aquellos que no solo contienen cantidades importantes de casos sobre dengue, son los que conforman el grupo de los más densamente poblados y los que tienen mayores tasas de Incidencia, no sucede de la misma forma para los partidos de Lanús y Tres de Febrero (que tienen menores tasas de Incidencia); sumado al caso de Lomas de Zamora donde no refleja esta situación (muy baja tasa de Incidencia y de casos confirmados de dengue).
 
