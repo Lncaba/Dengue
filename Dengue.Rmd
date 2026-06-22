@@ -15,9 +15,9 @@ En el caso de la Argentina, tuvieron las epidemias más importantes durante los 
 
 Ahora bien, cuando se cubre un análisis sobre el Conurbano Bonaerense, es entrar en una compleja categoría y remite a la convergencia de narrativas y prácticas (administrativas, técnicas, políticas, sociales y económicas) que contribuyeron a su construcción como una unidad específica y en oposición a la Ciudad de Buenos Aires, incorporando a la vida cotidiana, conceptos propios del urbanismo, para expresar mayormente con evocaciones negativas una realidad urbana social, compleja y dinámica (Atlas Conurbano, 2016). 
 
-Su extensión territorial  se operacionaliza siguiendo la categoría “24 partidos del GBA” (INDEC) que refiere al área que rodea a la Ciudad de Buenos Aires y que forma parte del aglomerado “Gran Buenos Aires”, que incluye, conjuntamente, a la Ciudad Autónoma de Buenos Aires y los mismos 24 partidos (Atlas Conurbano, 2016).
+La extensión territorial prosigue con la categoría “24 partidos del GBA” (INDEC) que refiere al área que rodea a la Ciudad de Buenos Aires y que forma parte del aglomerado “Gran Buenos Aires”, que incluye, conjuntamente, a la Ciudad Autónoma de Buenos Aires y los mismos 24 partidos (Atlas Conurbano, 2016). Sin embargo, al categorizarse como Conurbano (específicamente), y por sus concepciones previamente descritas, esta área no comprende a la Ciudad Autónoma de Buenos Aires.
 
-Por ello, es necesario interiorizarse en la problemática de casos de dengue, en gran parte del aglomerado que conforma el "Conurbano". Se enmarcará una investigación sobre cuánto incide la densidad poblacional de cada municipio de esta área geográfica sobre los casos confirmados de Dengue existente, durante el período de 2025 a junio de 2026.
+Por ello, es necesario interiorizarse en la problemática de casos de dengue, en gran parte del aglomerado que conforma el "Conurbano". Se enmarcará una investigación sobre cuánto incide la densidad poblacional de cada uno de los 24 municipios de esta área geográfica sobre los casos confirmados de Dengue existente, durante el período de 2025 a junio de 2026.
 
 # Problema: 
 
@@ -56,13 +56,17 @@ library(geoAr)
 ```
 
 ```{r}
+# cargamos los datasets
 df_poblacion_amba <- read_csv("Poblacion_2022_amba_departamentos.csv", locale = locale(encoding = "UTF-8"))
 
+# read_delim para no generar problemas con diferentes caracteres
 df_dengue <- read_delim("info_publica_dengue-1-2025-a-2026-06-15.csv", delim = ";", locale = locale(encoding = "latin1"))
 ```
 
 ```{r}
 # tema dengue
+# id_depto_indec_residencia necesariamente que sean todos sus códigos de 3 dígitos
+# conformar un agrupado de variables y totalizar la cantidad de casos de cada departamento/municipio
 df_dengue_bsas <- df_dengue |>
   filter(evento == "Dengue", provincia_residencia %in% c("Buenos Aires")) |>
   mutate(
@@ -73,6 +77,8 @@ df_dengue_bsas <- df_dengue |>
 
 ```{r}
 # tema poblacion
+# renombramos y seleccionamos las variables
+# cod_prov_pob sea double y cod_depto_pob reduzca sus cifras para posterior join 
 df_pob_bsas <- df_poblacion_amba |>
   rename(
     cod_prov_pob = `Código de provincia`,
@@ -99,6 +105,8 @@ mutate(
 ```
 
 ```{r}
+# id_prov_indec_residencia sea de un tipo de dato numérico
+# inner_join para cruzar con las columnas que compartan df_dengue_bsas con df_pob_bsas
 df_resultado <- df_dengue_bsas |>
   mutate(id_prov_indec_residencia = as.numeric(id_prov_indec_residencia)) %>%
   inner_join(
@@ -108,6 +116,9 @@ df_resultado <- df_dengue_bsas |>
 ```
 
 ```{r}
+# se modifica df_resultado para contener variables como la densidad poblacional y la tasa de incidencia
+# seleccionamos las variables que se necesitan y ordenamos las filas de la tasa
+# la tasa está definida por cada 100000 habitantes
 df_resultado <-df_resultado |>
   mutate(
     densidad_pob = pob_total / superficie_km2,
@@ -143,12 +154,14 @@ Revisando estos datos encontramos los 5 municipios más densamente poblados:
 Ahora seguimos esta profundización de los datasets con la combinación del mapa que proporciona "geoAr" para poder visualizar la tasa de Incidencia (por cada 100000 habitantes) en los municipios del Conurbano Bonaerense:
 
 ```{r}
-#vemos como esta compuesto con los cod desde geoAr
+#vemos como esta compuesto con los cod desde geoAr; asi entra el componente espacial al trabajo
 mapa_bsas <- get_geo("BUENOS AIRES", level = "departamento")
 ```
 
 
 ```{r}
+# sf (st_make_valid) para corregir geometrías inválidas
+# inner_join para unir el dataset de geoAr con los de df_resultado con énfasis en coddepto_censo e id_depto_indec_residencia 
 mapa_dengue <- mapa_bsas |>
   st_make_valid() |>
   inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
@@ -156,6 +169,7 @@ mapa_dengue <- mapa_bsas |>
 
 
 ```{r}
+# st_buffer para evitar polígonos invalidos o rotos 
 mapa_dengue <- mapa_bsas |>
   st_buffer(dist = 0) |>
   inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
@@ -165,7 +179,8 @@ mapa_dengue <- mapa_bsas |>
 # Figura/Mapa 1:
 
 ```{r}
-#casos absolutos del dengue
+# casos absolutos del dengue
+# correccion de geometrias inválidas y el calculo del centroide de la geometría
 mapa_centroides <- mapa_dengue |>
   st_make_valid() |>
   st_centroid()
@@ -210,7 +225,7 @@ mapa_coropleta <- ggplot(data = mapa_dengue) +
 print(mapa_coropleta)
 ```
 
-A la hora de visualizar el mapa/Figura 2 notamos ciertos comportamientos distintos a los que nos propone el mapa con los casos confirmados. En este caso podemos notar ciertas particularidades:
+A la hora de visualizar el Figura/Mapa 2 notamos ciertos comportamientos distintos a los que nos propone el mapa con los casos confirmados. En este caso podemos notar ciertas particularidades:
 
 - El caso de Ituzaingó lidera la mayor tasa de Incidencia sobre casos de dengue (26,9%).
 
@@ -221,6 +236,7 @@ Veamos ahora que propone el mapa interactivo, que permite unificar toda la infor
 # Figura/Mapa 3:
 
 ```{r}
+# mapa leaflet interactivo
 pal <- colorNumeric(palette = c("seagreen4","deeppink4"), domain = mapa_dengue$Tasa_Incidencia_100000)
 
 mapa_dengue |>
@@ -233,7 +249,7 @@ mapa_dengue |>
   )
 ```
 
-En este caso, revisando nuestro mapa interactivo podemos los 5 municipios más afectados por el dengue según los datos proporcionados:
+En este caso, revisando nuestro mapa interactivo (Figura/Mapa 3) podemos ver los 5 municipios más afectados por el dengue según los datos proporcionados:
 
 - El Municipio de Ituzaingó representa el color más fuerte: significa que la tasa de Incidencia es la más alta, con una cantidad de casos considerable (26,9% con 48 casos). 
 
@@ -254,6 +270,8 @@ Finalizando este trabajo de investigación pudimos revisar los datos correspondi
 - Tanto los partidos de Lanús como el de Tres de Febrero son los que poseen tasas de Incidencia sobre casos de dengue importantes, pero no son los mayores de la lista de los 5 municipios: en el caso de Lanús, posee una tasa del 14,1% con 65 casos; mientras que el Municipio de Tres de Febrero tiene una tasa de Incidencia del 11,6% con una cantidad de 42 casos.
 
 - Refiriéndose a los partidos de General San Martín y Vicente López, son los que cumplen con cierto enunciado al comenzar el trabajo: el Municipio de Gral. San Martín posee una tasa de Incidencia del 23,2% y con 103 casos de dengue, lo que lo lleva a ser el primer partido con más casos del Conurbano; el caso de Vicente López posee una tasa de Incidencia del 23,2% con 65 casos.
+
+- Un dato curioso es el caso de Ezeiza. En un principio al poder visualizar los mapas comprendí que uno de los 24 municipios del Conurbano no estaba contabilizado; se veía los casos de 23 partidos. Al revisar el dataset original de dengue comprendí que el Municipio de Ezeiza no contabilizó casos confirmados. Por ello en los 3 mapas este municipio no forma parte.
 
 Volviendo a la hipótesis: "Los 5 municipios más densamente poblados del Conurbano Bonaerense (Lanús, Vicente López, Tres de Febrero, General San Martín, Lomas de Zamora) revisten las más altas tasas de Incidencia de casos de dengue durante el período 2025-2026", podemos aducir que no es correcta este enunciado. 
 
