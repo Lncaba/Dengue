@@ -50,7 +50,6 @@ library(dplyr)
 library(tidyverse)
 library(ggplot2)
 library(ggspatial)
-library(osmdata)
 library(leaflet)
 library(geoAr)
 ```
