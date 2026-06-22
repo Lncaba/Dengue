@@ -192,9 +192,17 @@ mapa_casos <- ggplot() +
   geom_sf(data = mapa_dengue, fill = "blue", color = "darkgray", size = 0.2) +
   geom_sf(data = mapa_centroides, aes(size = Casos_dengue), color = "orange", alpha = 0.8) +
   scale_size_continuous(name = "Cantidad bruta de casos", range = c(3, 12)) +
+  annotation_scale(
+    location = "bl"
+  ) +
+  annotation_north_arrow(
+    location = "tr",
+    height = unit(1, "cm"),
+    width = unit(0.7, "cm")
+  ) +
   labs(
     title = "Cantidad de casos de dengue en el Conurbano Bonaerense",
-    caption = "Relevamiento de casos de dengue y los datos del censo 2022"
+    caption = "Elaboracion propia\nRelevamiento de casos de dengue y los datos del censo 2022"
   ) +
   theme_minimal()
 
@@ -219,9 +227,17 @@ En este caso (Figura/Mapa 1) encontramos a ciertos municipios, con grandes canti
 mapa_coropleta <- ggplot(data = mapa_dengue) +
   geom_sf(aes(fill = Tasa_Incidencia_100000), color = "black", size = 0.2) +
   scale_fill_viridis_c(option = "plasma", name = "Tasa de Incidencia (por cada 100.000 habitantes)") +
-    labs(
+  annotation_scale(
+    location = "bl"
+  ) +
+  annotation_north_arrow(
+    location = "tr",
+    height = unit(1, "cm"),
+    width = unit(0.7, "cm")
+  ) +  
+  labs(
     title = "Tasa de Incidencia en casos de dengue en el Conurbano Bonaerense",
-    caption = "Basado sobre casos de dengue con datos del censo 2022"
+    caption = "Elaboracion propia\nBasado sobre casos de dengue con datos del censo 2022"
   ) +
   theme_minimal()
 
