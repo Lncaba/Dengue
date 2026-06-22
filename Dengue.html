@@ -4503,19 +4503,26 @@ datasets cargados. Con ello logramos conseguir la unión de los datasets
 según variables comunes como el caso de los códigos de provincia y de
 departamento, que son estrictamente necesarios para unir
 especificaciones poblacionales, como conseguir la densidad poblacional o
-la tasa de incidencia de casos de dengue.</p>
-<p>Por ello, en esta otra parte del trabajo, posterior a la unión de los
-dos datasets no espaciales, se sumó la unión de este nuevo dataset con
-el mapa que brinda esta librería, siendo así de carácter espacial. Aquí
-es necesario utilizar la librería geoAr que nos brinda el mapa de la
-provincia de Buenos Aires, dividido de departamentos; mediante el uso de
-la librería sf algunas funciones para evitar geometrías inválidas o
-rotas y, posteriormente, la generación de diferentes mapas (utilzando
-esta librería, como así también mediante ggplot2 o leaflet -que nos
-proporciona un mapa interactivo)</p>
+la tasa de incidencia de casos de dengue. Previo a seguir con los mapas
+se decidió transformar la latitud y longitud del centroide a una
+geometría mediante la librería sf y estar atento a transformarla a
+POSGAR 2007/Faja 4 (cod. 22184), concibiendo así la noción espacial
+esperada.</p>
+<p>En la siguiente etapa del trabajo, posterior a la unión de los dos
+datasets, se sumó la unión de este nuevo dataset con el mapa que brinda
+esta librería, siendo así de carácter espacial. Aquí es necesario
+utilizar la librería geoAr que nos brinda el mapa de la provincia de
+Buenos Aires, dividido de departamentos; mediante el uso de la librería
+sf utilizamos algunas funciones para evitar geometrías inválidas o rotas
+y, posteriormente, la generación de diferentes mapas (utilzando esta
+librería, como así también mediante ggplot2 o leaflet -que nos
+proporciona un mapa interactivo). Si bien no hubo problemas en los dos
+primeros mapas, fue necesario volver a transformar la geometría a 4326
+-los grados geográficos- para que ubique correctamente al área
+geográfica determinada.</p>
 <p>Por supuesto a lo ultimo del trabajo, encontramos las conclusiones
-que nos permitió sintetizar los distintos resultados que arrojaron los
-cálculos previamente obtenidos; corroborar la hipótesis planteada y
+donde se sintetizaron los distintos resultados que arrojaron los
+cálculos previamente obtenidos; se corroboró la hipótesis planteada y
 finaliza con las referencias utilizadas para la investigación.</p>
 </div>
 <div id="análisis" class="section level1">

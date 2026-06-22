@@ -36,11 +36,11 @@ Analizar la densidad poblacional de los municipios (o departamentos) que conform
 Este análisis se compone originalmente de dos datasets no espaciales: el correspondiente a los casos del dengue, que dedica su información a una representación de tabla epidemiológica entre los años 2025 y 2026; el otro dataset responde a un reporte de datos demográficos que derivan del Censo 2022, que describen datos estadísticos (es interesante que contiene datos georreferenciales, pero no por ello son estrictamente un dataset espacial). 
 Sin embargo, más adelante prosiguiendo con la investigación, se recurrió a la utilización de la librería "geoAr" que permite proporcionar distintas geometrías, entre las que necesitamos sobre los 24 municipios del Conurbano Bonaerense. 
 
-En esta parte del trabajo se utilizaron distintas librerías como tidyverse y dplyr que nos permite las modificaciones pertinentes a los datasets cargados. Con ello logramos conseguir la unión de los datasets según variables comunes como el caso de los códigos de provincia y de departamento, que son estrictamente necesarios para unir especificaciones poblacionales, como conseguir la densidad poblacional o la tasa de incidencia de casos de dengue.
+En esta parte del trabajo se utilizaron distintas librerías como tidyverse y dplyr que nos permite las modificaciones pertinentes a los datasets cargados. Con ello logramos conseguir la unión de los datasets según variables comunes como el caso de los códigos de provincia y de departamento, que son estrictamente necesarios para unir especificaciones poblacionales, como conseguir la densidad poblacional o la tasa de incidencia de casos de dengue. Previo a seguir con los mapas se decidió transformar la latitud y longitud del centroide a una geometría mediante la librería sf y estar atento a transformarla a POSGAR 2007/Faja 4 (cod. 22184), concibiendo así la noción espacial esperada.
 
-Por ello, en esta otra parte del trabajo, posterior a la unión de los dos datasets no espaciales, se sumó la unión de este nuevo dataset con el mapa que brinda esta librería, siendo así de carácter espacial. Aquí es necesario utilizar la librería geoAr que nos brinda el mapa de la provincia de Buenos Aires, dividido de departamentos; mediante el uso de la librería sf algunas funciones para evitar geometrías inválidas o rotas y, posteriormente, la generación de diferentes mapas (utilzando esta librería, como así también mediante ggplot2 o leaflet -que nos proporciona un mapa interactivo)
+En la siguiente etapa del trabajo, posterior a la unión de los dos datasets, se sumó la unión de este nuevo dataset con el mapa que brinda esta librería, siendo así de carácter espacial. Aquí es necesario utilizar la librería geoAr que nos brinda el mapa de la provincia de Buenos Aires, dividido de departamentos; mediante el uso de la librería sf utilizamos algunas funciones para evitar geometrías inválidas o rotas y, posteriormente, la generación de diferentes mapas (utilzando esta librería, como así también mediante ggplot2 o leaflet -que nos proporciona un mapa interactivo). Si bien no hubo problemas en los dos primeros mapas, fue necesario volver a transformar la geometría a 4326 -los grados geográficos- para que ubique correctamente al área geográfica determinada.
 
-Por supuesto a lo ultimo del trabajo, encontramos las conclusiones que nos permitió sintetizar los distintos resultados que arrojaron los cálculos previamente obtenidos; corroborar la hipótesis planteada y finaliza con las referencias utilizadas para la investigación.
+Por supuesto a lo ultimo del trabajo, encontramos las conclusiones donde se sintetizaron los distintos resultados que arrojaron los cálculos previamente obtenidos; se corroboró la hipótesis planteada y finaliza con las referencias utilizadas para la investigación.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
@@ -81,7 +81,7 @@ df_dengue_bsas <- df_dengue |>
 ```{r}
 # tema poblacion
 # renombramos y seleccionamos las variables
-# cod_prov_pob sea double y cod_depto_pob reduzca sus cifras para posterior join 
+# cod_prov_pob sea numerico y cod_depto_pob reduzca sus cifras para posterior join 
 df_pob_bsas <- df_poblacion_amba |>
   rename(
     cod_prov_pob = `Código de provincia`,
