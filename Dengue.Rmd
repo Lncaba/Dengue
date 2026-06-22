@@ -36,7 +36,7 @@ Analizar la densidad poblacional de los municipios (o departamentos) que conform
 Este análisis se compone originalmente de dos datasets no espaciales: el correspondiente a los casos del dengue, que dedica su información a una representación de tabla epidemiológica entre los años 2025 y 2026; el otro dataset responde a un reporte de datos demográficos que derivan del Censo 2022, que describen datos estadísticos (es interesante que contiene datos georreferenciales, pero no por ello son estrictamente un dataset espacial). 
 Sin embargo, más adelante prosiguiendo con la investigación, se recurrió a la utilización de la librería "geoAr" que permite proporcionar distintas geometrías, entre las que necesitamos sobre los 24 municipios del Conurbano Bonaerense. 
 
-En esta parte del trabajo se utilizaron distintas librerías como tidyverse y dplyr que nos permite las modificaciones pertinentes a los datasets cargados. Con ello logramos conseguir la unión de los datasets según variables comunes como el caso de los códigos de provincia y de departamento, que son estrictamente necesarios para unir especificaciones poblacionales, como conseguir la densidad poblacional o la tasa de incidencia de casos de dengue. Previo a seguir con los mapas se decidió transformar la latitud y longitud del centroide a una geometría mediante la librería sf y estar atento a transformarla a POSGAR 2007/Faja 4 (cod. 22184), concibiendo así la noción espacial esperada.
+En esta parte del trabajo se utilizaron distintas librerías como tidyverse y dplyr que nos permite las modificaciones pertinentes a los datasets cargados. Con ello logramos conseguir la unión de los datasets según variables comunes como el caso de los códigos de provincia y de departamento, que son estrictamente necesarios para unir especificaciones poblacionales, como conseguir la densidad poblacional o la tasa de incidencia de casos de dengue. Previo a seguir con los mapas se decidió transformar la latitud y longitud del centroide a una geometría mediante la librería sf y estar atento a transformarla a POSGAR 2007/Faja 5 (cod. 22185), concibiendo así la noción espacial esperada.
 
 En la siguiente etapa del trabajo, posterior a la unión de los dos datasets, se sumó la unión de este nuevo dataset con el mapa que brinda esta librería, siendo así de carácter espacial. Aquí es necesario utilizar la librería geoAr que nos brinda el mapa de la provincia de Buenos Aires, dividido de departamentos; mediante el uso de la librería sf utilizamos algunas funciones para evitar geometrías inválidas o rotas y, posteriormente, la generación de diferentes mapas (utilzando esta librería, como así también mediante ggplot2 o leaflet -que nos proporciona un mapa interactivo). Si bien no hubo problemas en los dos primeros mapas, fue necesario volver a transformar la geometría a 4326 -los grados geográficos- para que ubique correctamente al área geográfica determinada.
 
@@ -109,10 +109,10 @@ mutate(
 
 ```{r}
 # con st_as_sf logramos que df_pob_bsas se vuelva un punto geométrico; crs = 4326 para indicar WGS84 para lon y lat del centroide 
-# aca realizamos la transformación a POSGAR 2007/Faja 4
+# aca realizamos la transformación a POSGAR 2007/Faja 5
 df_resultado <- df_pob_bsas |>
 st_as_sf(coords = c("Longitud del centroide", "Latitud del centroide"), crs = 4326) |> 
-  st_transform(22184)
+  st_transform(22185)
 ```
 
 
@@ -174,20 +174,20 @@ mapa_bsas <- get_geo("BUENOS AIRES", level = "departamento")
 ```{r}
 # sf (st_make_valid) para corregir geometrías inválidas
 # inner_join para unir el dataset de geoAr con los de df_resultado con énfasis en coddepto_censo e id_depto_indec_residencia 
-# incluimos la transformación a POSGAR 2007/Faja 4
+# incluimos la transformación a POSGAR 2007/Faja 5
 mapa_dengue <- mapa_bsas |>
   st_make_valid() |>
-  st_transform(22184) |>
+  st_transform(22185) |>
   inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
 ```
 
 
 ```{r}
 # st_buffer para evitar polígonos invalidos o rotos 
-# misma transformación (POSGAR 2007/Faja 4)
+# misma transformación (POSGAR 2007/Faja 5)
 mapa_dengue <- mapa_bsas |>
   st_buffer(dist = 0) |>
-  st_transform(22184) |>
+  st_transform(22185) |>
   inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
 ```
 
