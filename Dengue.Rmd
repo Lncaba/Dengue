@@ -2,7 +2,7 @@
 title: "Dengue"
 author: "Lucas Caballero"
 date: "2026-06-21"
-output: html_document
+output:
 ---
 
 ## CASO DE ESTUDIO: DENGUE EN EL CONURBANO BONAERENSE
@@ -142,6 +142,7 @@ df_resultado <-df_resultado |>
     Provincia = provincia_residencia,
     Municipio = nombre_depto_pob,
     Casos_dengue = total_casos_dengue,
+    Poblacion_total = pob_total,
     Superficie_Km2 = superficie_km2,
     Densidad_Hab_Km2 = densidad_pob,
     Tasa_Incidencia_100000 =tasa_incidencia
@@ -191,7 +192,6 @@ mapa_dengue <- mapa_bsas |>
   inner_join(df_resultado, by = c("coddepto_censo" = "id_depto_indec_residencia"))
 ```
 
-
 # Figura/Mapa 1:
 
 ```{r}
@@ -220,6 +220,7 @@ mapa_casos <- ggplot() +
   theme_minimal()
 
 print(mapa_casos)
+ggsave("mapa_casos.jpg", plot = mapa_casos, width = 10, height = 8, dpi = 300)
 ```
 
 En este caso (Figura/Mapa 1) encontramos a ciertos municipios, con grandes cantidades de casos confirmados de dengue. Prosiguiendo con la lógica de los primeros 5 municipios con más casos encontramos que:
@@ -255,6 +256,7 @@ mapa_coropleta <- ggplot(data = mapa_dengue) +
   theme_minimal()
 
 print(mapa_coropleta)
+ggsave("mapa_coropleata.jpg", plot = mapa_coropleta, width = 10, height = 8, dpi = 300)
 ```
 
 A la hora de visualizar el Figura/Mapa 2 notamos ciertos comportamientos distintos a los que nos propone el mapa con los casos confirmados. En este caso podemos notar ciertas particularidades:
@@ -265,22 +267,150 @@ A la hora de visualizar el Figura/Mapa 2 notamos ciertos comportamientos distint
 
 Veamos ahora que propone el mapa interactivo, que permite unificar toda la información importante referente a los casos de dengue. En este caso interactúan datos como el nombre del municipio, la tasa de Incidencia de casos y la cantidad bruta de los casos.
 
+# Grafico 1:
+
+```{r}
+# Grafico de dispersion para cruzar Densidad y Tasa de Incidencia
+grafico_correlacion <- ggplot(data = df_resultado, aes(x = Densidad_Hab_Km2, y = Tasa_Incidencia_100000)) +
+  geom_point(aes(size = Casos_dengue), color = "darkorange", alpha = 0.7) +
+  geom_smooth(method = "lm", color = "blue", se = TRUE, linetype = "dashed") +
+  geom_text(aes(label = Municipio), vjust = -1, size = 3, check_overlap = TRUE) +
+  labs(
+    title = "Relación entre Densidad Poblacional y Tasa de Incidencia de Dengue",
+    subtitle = "Municipios del Conurbano Bonaerense (2025-2026)",
+    x = "Densidad Poblacional (Habitantes / Km²)",
+    y = "Tasa de Incidencia (por cada 100.000 habitantes)",
+    size = "Casos Absolutos",
+    caption = "Elaboración propia basada en datos del Censo 2022 y registros de salud pública."
+  ) +
+  theme_minimal()
+
+print(grafico_correlacion)
+ggsave("grafico_correlacion.jpg", plot = grafico_correlacion, width = 9, height = 7, dpi = 300)
+```
+
+Como se describe en el Gráfico 1, uniendo las variables de Densidad Poblacional y Tasa de Incidencia, notamos como los casos de Ituzaingó está en la cima, liderando la tasa, y no siendo de los más densamente poblados; los casos como el de Lomas de Zamora o Avellaneda, no son los que se corresponde con la tasa, siendo de considerable densidad poblacional. 
+
+# Gráfico 2:
+
+```{r}
+# 1. Creamos una clasificación rápida por zonas (ejemplo con algunos municipios de tu análisis)
+df_resultado_zonas <- df_resultado |>
+  mutate(Zona = case_match(
+    Municipio,
+    "Vicente López" ~ "Norte",
+    "Tigre" ~ "Norte",
+    "San Fernando" ~ "Norte",
+    "San Isidro" ~ "Norte",
+    "San Miguel" ~ "Norte",
+    "Malvinas Argentinas" ~ "Norte",
+    "José C. Paz" ~ "Norte",
+    "General San Martín" ~ "Norte",
+    "Tres de Febrero" ~ "Oeste",
+    "Morón" ~ "Oeste",
+    "Merlo" ~ "Oeste",
+    "Moreno" ~ "Oeste",
+    "Hurlingham" ~ "Oeste",
+    "Ituzaingó" ~ "Oeste",
+    "La Matanza" ~ "Oeste",
+    "Lanús" ~ "Sur",
+    "Lomas de Zamora" ~ "Sur",
+    "Avellaneda" ~ "Sur",
+    "Almirante Brown" ~ "Sur",
+    "Quilmes" ~ "Sur",
+    "Berazategui" ~ "Sur",
+    "Florencio Varela" ~ "Sur",
+    "Esteban Echeverría" ~ "Sur",
+  ))
+
+# 2. Gráfico de Cajas
+grafico_cajas <- ggplot(df_resultado_zonas, aes(x = Zona, y = Tasa_Incidencia_100000, fill = Zona)) +
+  geom_boxplot(alpha = 0.6, outlier.color = "red", outlier.shape = 16) +
+  geom_point(size = 2, alpha = 0.5) + # Muestra los municipios como puntos individuales
+  geom_text(aes(label = Municipio),
+            vjust = -0.7,
+            size = 2.5,
+            check_overlap = TRUE) +
+  labs(
+    title = "Distribución de la Tasa de Incidencia de Dengue por Zona",
+    x = "Regiones del Conurbano",
+    y = "Tasa de Incidencia (por 100.000 hab.)",
+    caption = "Elaboración propia"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+print(grafico_cajas)
+```
+
+Si empezamos a establecer los bloques o regiones del Conurbano en Norte, Oeste y Sur, notamos los valores atípicos o outliers destacados como veniamos analizando: los casos de Ituzaingó, Vicente López o Lanús. Algo que se verá más en su totalidad en el mapa interactivo siguiente.
+
 # Figura/Mapa 3:
 
 ```{r}
 # mapa leaflet interactivo
 # si o si st_transform sino el mapa leaflet aparece en cualquier lado
-pal <- colorNumeric(palette = c("seagreen4","deeppink4"), domain = mapa_dengue$Tasa_Incidencia_100000)
+# 1. Definición de la paleta de colores
+pal <- colorNumeric(palette = c("seagreen4", "deeppink4"), domain = mapa_dengue$Tasa_Incidencia_100000)
 
-mapa_dengue |>
+# 2. Creación del mapa interactivo con todos sus componentes cartográficos
+mapa_interactivo <- mapa_dengue |>
   st_transform(4326) |>
   leaflet() |>
   addTiles() |>
   addPolygons(
     color = ~pal(Tasa_Incidencia_100000),
-    popup = ~paste0("<b>Municipio:</b> ", Municipio, "<br>", "<b>Tasa:</b> ", round(Tasa_Incidencia_100000, 1), "<br>", "<b>Casos confirmados:</b> ", Casos_dengue),
-    label = ~Municipio
+    popup = ~paste0("<b>Municipio:</b> ", Municipio, "<br>", 
+                    "<b>Tasa:</b> ", round(Tasa_Incidencia_100000, 1), "<br>", 
+                    "<b>Casos confirmados:</b> ", Casos_dengue),
+    label = ~Municipio,
+    fillOpacity = 0.7,
+    weight = 1
+  ) |>
+  
+  # --- A. AGREGAR ESCALA GRÁFICA ---
+  addScaleBar(
+    position = "bottomleft", 
+    options = scaleBarOptions(metric = TRUE, imperial = FALSE)
+  ) |>
+  
+  # --- B. AGREGAR TÍTULO (Usando código HTML) ---
+  addControl(
+    html = "<div style='background: rgba(255,255,255,0.8); padding: 8px; border-radius: 5px;'>
+              <h3 style='margin:0; font-family: Arial, sans-serif;'>Tasa de Incidencia de Dengue</h3>
+              <p style='margin:2px 0 0 0; font-size:12px; color:#555;'>Conurbano Bonaerense (2025-2026)</p>
+            </div>", 
+    position = "topright"
+  ) |>
+  
+  # --- C. AGREGAR EPÍGRAFE / CAPTION ---
+  addControl(
+    html = "<div style='background: rgba(255,255,255,0.7); padding: 4px; font-size: 10px; font-family: Arial;'>
+              <b>Elaboración propia</b><br>Basado en casos de dengue y datos del Censo 2022
+            </div>",
+    position = "bottomright"
+  ) |>
+  
+  # --- D. AGREGAR LA LEYENDA DE COLORES ---
+  addLegend(
+    pal = pal, 
+    values = ~Tasa_Incidencia_100000, 
+    opacity = 0.7, 
+    title = "Tasa (por 100k hab.)", 
+    position = "bottomleft"
+  ) |>
+  
+  # --- E. AGREGAR FLECHA DEL NORTE (HTML Puro) ---
+  addControl(
+    html = "<div style='font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; color: #333; text-align: center; background: rgba(255,255,255,0.7); padding: 2px 8px; border-radius: 5px;'>
+              <span style='display: block; transform: rotate(0deg); line-height: 1;'>↑</span>
+              <span style='font-size: 11px; display: block; margin-top: -2px;'>N</span>
+            </div>",
+    position = "topleft"
   )
+
+# Mostrar el mapa en el Rmd
+mapa_interactivo
 ```
 
 En este caso, revisando nuestro mapa interactivo (Figura/Mapa 3) podemos ver los 5 municipios más afectados por el dengue según los datos proporcionados:
