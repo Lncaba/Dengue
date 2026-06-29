@@ -3,6 +3,8 @@ title: "Dengue"
 author: "Lucas Caballero"
 date: "2026-06-21"
 output:
+  html_document:
+    code_folding: hide
 ---
 
 ## CASO DE ESTUDIO: DENGUE EN EL CONURBANO BONAERENSE
@@ -43,7 +45,7 @@ En la siguiente etapa del trabajo, posterior a la unión de los dos datasets, se
 Por supuesto a lo ultimo del trabajo, encontramos las conclusiones donde se sintetizaron los distintos resultados que arrojaron los cálculos previamente obtenidos; se corroboró la hipótesis planteada y finaliza con las referencias utilizadas para la investigación.
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 set.seed(123)
 ```
 
@@ -289,7 +291,7 @@ print(grafico_correlacion)
 ggsave("grafico_correlacion.jpg", plot = grafico_correlacion, width = 9, height = 7, dpi = 300)
 ```
 
-Como se describe en el Gráfico 1, uniendo las variables de Densidad Poblacional y Tasa de Incidencia, notamos como los casos de Ituzaingó está en la cima, liderando la tasa, y no siendo de los más densamente poblados; los casos como el de Lomas de Zamora o Avellaneda, no son los que se corresponde con la tasa, siendo de considerable densidad poblacional. 
+Como se describe en el Gráfico 1, uniendo las variables de Densidad Poblacional y Tasa de Incidencia, notamos como los casos de Ituzaingó está en la cima, liderando la tasa, y no siendo de los más densamente poblados; los casos como los de General San Martín, de considerable densidad poblacional, sumado a una tasa de Incidencia importantes; por último, los casos como el de Lomas de Zamora, no son los que se corresponde con la tasa, siendo de considerable densidad poblacional. 
 
 # Gráfico 2:
 
@@ -343,7 +345,7 @@ grafico_cajas <- ggplot(df_resultado_zonas, aes(x = Zona, y = Tasa_Incidencia_10
 print(grafico_cajas)
 ```
 
-Si empezamos a establecer los bloques o regiones del Conurbano en Norte, Oeste y Sur, notamos los valores atípicos o outliers destacados como veniamos analizando: los casos de Ituzaingó, Vicente López o Lanús. Algo que se verá más en su totalidad en el mapa interactivo siguiente.
+Si empezamos a establecer los bloques o regiones del Conurbano en Norte, Oeste y Sur, notamos los valores atípicos o outliers destacados como veniamos analizando: los casos de Ituzaingó, General San Martín, o Lanús. Algo que se verá más en su totalidad en el mapa interactivo siguiente.
 
 # Figura/Mapa 3:
 
