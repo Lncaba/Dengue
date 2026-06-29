@@ -62,10 +62,10 @@ library(geoAr)
 
 ```{r}
 # cargamos los datasets
-df_poblacion_amba <- read_csv("Poblacion_2022_amba_departamentos.csv", locale = locale(encoding = "UTF-8"))
+df_poblacion_amba <- read_csv("data/Poblacion_2022_amba_departamentos.csv", locale = locale(encoding = "UTF-8"))
 
 # read_delim para no generar problemas con diferentes caracteres
-df_dengue <- read_delim("info_publica_dengue-1-2025-a-2026-06-15.csv", delim = ";", locale = locale(encoding = "latin1"))
+df_dengue <- read_delim("data/info_publica_dengue-1-2025-a-2026-06-15.csv", delim = ";", locale = locale(encoding = "latin1"))
 ```
 
 ```{r}
@@ -222,7 +222,7 @@ mapa_casos <- ggplot() +
   theme_minimal()
 
 print(mapa_casos)
-ggsave("mapa_casos.jpg", plot = mapa_casos, width = 10, height = 8, dpi = 300)
+ggsave("graficos/mapa_casos.jpg", plot = mapa_casos, width = 10, height = 8, dpi = 300)
 ```
 
 En este caso (Figura/Mapa 1) encontramos a ciertos municipios, con grandes cantidades de casos confirmados de dengue. Prosiguiendo con la lógica de los primeros 5 municipios con más casos encontramos que:
@@ -258,7 +258,7 @@ mapa_coropleta <- ggplot(data = mapa_dengue) +
   theme_minimal()
 
 print(mapa_coropleta)
-ggsave("mapa_coropleata.jpg", plot = mapa_coropleta, width = 10, height = 8, dpi = 300)
+ggsave("graficos/mapa_coropleata.jpg", plot = mapa_coropleta, width = 10, height = 8, dpi = 300)
 ```
 
 A la hora de visualizar el Figura/Mapa 2 notamos ciertos comportamientos distintos a los que nos propone el mapa con los casos confirmados. En este caso podemos notar ciertas particularidades:
@@ -288,7 +288,7 @@ grafico_correlacion <- ggplot(data = df_resultado, aes(x = Densidad_Hab_Km2, y =
   theme_minimal()
 
 print(grafico_correlacion)
-ggsave("grafico_correlacion.jpg", plot = grafico_correlacion, width = 9, height = 7, dpi = 300)
+ggsave("graficos/grafico_correlacion.jpg", plot = grafico_correlacion, width = 9, height = 7, dpi = 300)
 ```
 
 Como se describe en el Gráfico 1, uniendo las variables de Densidad Poblacional y Tasa de Incidencia, notamos como los casos de Ituzaingó está en la cima, liderando la tasa, y no siendo de los más densamente poblados; los casos como los de General San Martín, de considerable densidad poblacional, sumado a una tasa de Incidencia importantes; por último, los casos como el de Lomas de Zamora, no son los que se corresponde con la tasa, siendo de considerable densidad poblacional. 
@@ -343,6 +343,7 @@ grafico_cajas <- ggplot(df_resultado_zonas, aes(x = Zona, y = Tasa_Incidencia_10
   theme(legend.position = "none")
 
 print(grafico_cajas)
+ggsave("graficos/grafico_cajas.jpg", plot = grafico_cajas, width = 9, height = 7, dpi = 300)
 ```
 
 Si empezamos a establecer los bloques o regiones del Conurbano en Norte, Oeste y Sur, notamos los valores atípicos o outliers destacados como veniamos analizando: los casos de Ituzaingó, General San Martín, o Lanús. Algo que se verá más en su totalidad en el mapa interactivo siguiente.
