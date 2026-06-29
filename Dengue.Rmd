@@ -258,7 +258,7 @@ mapa_coropleta <- ggplot(data = mapa_dengue) +
   theme_minimal()
 
 print(mapa_coropleta)
-ggsave("graficos/mapa_coropleata.jpg", plot = mapa_coropleta, width = 10, height = 8, dpi = 300)
+ggsave("graficos/mapa_coropleta.jpg", plot = mapa_coropleta, width = 10, height = 8, dpi = 300)
 ```
 
 A la hora de visualizar el Figura/Mapa 2 notamos ciertos comportamientos distintos a los que nos propone el mapa con los casos confirmados. En este caso podemos notar ciertas particularidades:

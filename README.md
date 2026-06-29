@@ -16,3 +16,20 @@ Fuente: Ministerio de Salud. Secretaría de Promoción de la Salud, Prevención 
 
 Fuente: Pablo De Grande y Agustín Salvia (2024). Indicadores del Censo Nacional de Población, Hogares y Viviendas, 2022. Recuperado el 20 de junio, 2026, de https://poblaciones.org/@257701
 
+[graficos](./graficos):
+
+`grafico_cajas.jpg`: corresponde a un gráfico de boxplot utilizado para ver los outliers, o municipios que destacan en tasa de Incidencia o densidad poblacional. 
+
+`grafico_correlacion.jpg`: gráfico de dispersion para cruzar Densidad y Tasa de Incidencia. 
+
+`mapa_casos.jpg`: mapa destancando la cantidad bruta de casos de dengue por municipios.
+
+`mapa_coropleta.jpg`: mapa destacando la tasa de Incidencia por municipios.
+
+## Otras referencias:
+
+Ministerio de Salud de la Nación. (2024). Resumen ejecutivo: Plan de preparación y respuesta integral a epidemias de dengue y otras enfermedades arbovirales. Argentina.gob.ar. https://www.argentina.gob.ar/sites/default/files/2024/08/2025-10-resumen-ejecutivo-plan-preparacion-arbovirus-1310.pdf
+
+Programa de Estudios del Conurbano. (2016). Conurbano. Atlas del Conurbano Bonaerense; Universidad Nacional de Avellaneda. https://www.atlasconurbano.info/pagina.php?id=169
+
+Ruiz Nicolini J, Del Boca P, Juara J (2024). geoAr: Argentina’s Spatial Data Toolbox. R package version 1.0.0, https://github.com/PoliticaArgentina/geoAr.
